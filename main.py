@@ -7,14 +7,12 @@ s = SnakeGame()
 gd = GameDisplay(s)
 
 while s.snakeLength > 0:
-    # if randint(0, 100) > 75:
-    s.changeDirection(direction.up)
-    #     print("direction changed")
+    sleep(2)
+
+    s.changeDirection(direction.right)
 
     movement = s.moveSnake()
+
     gd.updateSnake(movement)
 
-    print(s.snake)
-
-    sleep(0.5)
 gd.animate()

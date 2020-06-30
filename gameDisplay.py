@@ -47,8 +47,9 @@ class GameDisplay:
     # Redraws snake and food
     def updateSnake(self, movement):
         if movement == -1:
-            self.snakeLayer.insert(0, self.canvas.itemconfig(
-                self.foodLayer.pop(), fill="blue"))
+            moveme = self.foodLayer.pop()
+            self.canvas.itemconfig(moveme, fill="blue")
+            self.snakeLayer.insert(0, moveme)
             self.canvas.itemconfig(self.snakeLayer[1], fill="black")
             self.foodLayer.append(self.canvas.create_oval(
                 self.gameInstance.food[0]*20+44, self.gameInstance.food[1]*20+44, self.gameInstance.food[0]*20+56, self.gameInstance.food[1]*20+56, fill="red"))
@@ -56,10 +57,10 @@ class GameDisplay:
         elif movement == 1:
             moveme = self.snakeLayer.pop()
             self.canvas.itemconfig(moveme, fill="blue")
-            x = ((self.gameInstance.snake[0][0] + self.gameInstance.moveDirection.value[0])
-                 * 20) - (self.gameInstance.snake[-1][0] * 20)
-            y = ((self.gameInstance.snake[0][1] + self.gameInstance.moveDirection.value[1])
-                 * 20) - (self.gameInstance.snake[-1][1] * 20)
+            x = ((self.gameInstance.snake[0][0]) 
+                - int((self.canvas.coords(moveme)[0] - 44)/20)) * 20
+            y = ((self.gameInstance.snake[0][1]) 
+                - int((self.canvas.coords(moveme)[1] - 44)/20)) * 20
             self.canvas.move(moveme, x, y)
             self.snakeLayer.insert(0, moveme)
             self.canvas.itemconfig(self.snakeLayer[1], fill="black")
