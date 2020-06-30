@@ -59,6 +59,11 @@ class SnakeGame:
     def changeDirection(self, newDir):
         self.moveDirection = newDir
 
+    def getPossibleDirections(self):
+        if self.moveDirection == direction.left or self.moveDirection == direction.right:
+            return [direction.up, direction.down]
+        return [direction.left, direction.right]
+
     # Randomly generate new food
     def generateFood(self):
         self.board[self.food[0]][self.food[1]] = items.blank.value
