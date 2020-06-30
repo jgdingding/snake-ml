@@ -5,6 +5,17 @@ from time import *
 snakee = []
 foood = []
 def drawBoard(root, s, w):
+    w.create_line(50,50,50,450)
+    w.create_line(450,450,450,50)
+    w.create_line(50,50,450,50)
+    w.create_line(50,450,450,450)
+
+    for i in range(70, 450, 20):
+        w.create_line(i,50,i,450)
+
+    for j in range(70, 450, 20):
+        w.create_line(50,j,450,j)
+        
     for i in range(len(s.snake)):
         if i > 0:
             snakee.append(w.create_oval(s.snake[i][0]*20+44,s.snake[i][1]*20+44,s.snake[i][0]*20+56, s.snake[i][1]*20+56, fill = "black"))
@@ -42,18 +53,6 @@ def main():
     root.geometry('500x500')
     
     w = Canvas(root, width = 500, height = 500)
-
-    line = w.create_line(50,50,50,450)
-    line = w.create_line(450,450,450,50)
-    line = w.create_line(50,50,450,50)
-    line = w.create_line(50,450,450,450)
-
-    for i in range(70, 450, 20):
-        line = w.create_line(i,50,i,450)
-
-    for j in range(70, 450, 20):
-        line = w.create_line(50,j,450,j)
-
     s = SnakeGame()
 
     drawBoard(root, s, w)
