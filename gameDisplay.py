@@ -32,13 +32,16 @@ class GameDisplay:
         for i in range(len(self.gameInstance.snake)):
             if i > 0:
                 self.snakeLayer.append(self.canvas.create_oval(
-                    self.gameInstance.snake[i][0]*20+44, self.gameInstance.snake[i][1]*20+44, self.gameInstance.snake[i][0]*20+56, self.gameInstance.snake[i][1]*20+56, fill="black"))
+                    self.gameInstance.snake[i][0]*20+44, self.gameInstance.snake[i][1]*20+44, 
+                    self.gameInstance.snake[i][0]*20+56, self.gameInstance.snake[i][1]*20+56, fill="black"))
             else:
                 self.snakeLayer.append(self.canvas.create_oval(
-                    self.gameInstance.snake[i][0]*20+44, self.gameInstance.snake[i][1]*20+44, self.gameInstance.snake[i][0]*20+56, self.gameInstance.snake[i][1]*20+56, fill="blue"))
+                    self.gameInstance.snake[i][0]*20+44, self.gameInstance.snake[i][1]*20+44, 
+                    self.gameInstance.snake[i][0]*20+56, self.gameInstance.snake[i][1]*20+56, fill="blue"))
 
         self.foodLayer.append(self.canvas.create_oval(
-            self.gameInstance.food[0]*20+44, self.gameInstance.food[1]*20+44, self.gameInstance.food[0]*20+56, self.gameInstance.food[1]*20+56, fill="red"))
+            self.gameInstance.food[0]*20+44, self.gameInstance.food[1]*20+44, 
+            self.gameInstance.food[0]*20+56, self.gameInstance.food[1]*20+56, fill="red"))
         self.canvas.pack()
 
         self.root.update()
@@ -52,7 +55,8 @@ class GameDisplay:
             self.snakeLayer.insert(0, moveme)
             self.canvas.itemconfig(self.snakeLayer[1], fill="black")
             self.foodLayer.append(self.canvas.create_oval(
-                self.gameInstance.food[0]*20+44, self.gameInstance.food[1]*20+44, self.gameInstance.food[0]*20+56, self.gameInstance.food[1]*20+56, fill="red"))
+                self.gameInstance.food[0]*20+44, self.gameInstance.food[1]*20+44, 
+                self.gameInstance.food[0]*20+56, self.gameInstance.food[1]*20+56, fill="red"))
 
         elif movement == 1:
             moveme = self.snakeLayer.pop()
