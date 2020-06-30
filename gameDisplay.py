@@ -1,82 +1,71 @@
-from tkinter import *
-from snakeGame import *
-from time import *
+from tkinter import Canvas
+from tkinter import Tk
+from snakeGame import direction, SnakeGame
 
-snakee = []
-foood = []
-def drawBoard(root, s, w):
-    w.create_line(50,50,50,450)
-    w.create_line(450,450,450,50)
-    w.create_line(50,50,450,50)
-    w.create_line(50,450,450,450)
 
-    for i in range(70, 450, 20):
-        w.create_line(i,50,i,450)
+class GameDisplay:
 
-    for j in range(70, 450, 20):
-        w.create_line(50,j,450,j)
-        
-    for i in range(len(s.snake)):
-        if i > 0:
-            snakee.append(w.create_oval(s.snake[i][0]*20+44,s.snake[i][1]*20+44,s.snake[i][0]*20+56, s.snake[i][1]*20+56, fill = "black"))
-        else:
-            snakee.append(w.create_oval(s.snake[i][0]*20+44,s.snake[i][1]*20+44,s.snake[i][0]*20+56, s.snake[i][1]*20+56, fill = "blue"))
+    def __init__(self, sg):
+        self.gameInstance = sg
+        self.snakeLayer = []
+        self.foodLayer = []
 
-    foood.append(w.create_oval(s.food[0]*20+44, s.food[1]*20+44, s.food[0]*20+56, s.food[1]*20+56, fill = "red"))
-    w.pack()
+        # initialize tkinter elements
+        self.root = Tk()
+        self.root.geometry('500x500')
+        self.canvas = Canvas(self.root, width=500, height=500)  # w
 
-    return
+        self.drawBoard()
 
-def updateSnake(root, s, w, direct):
-    sleep(0.5)
-    for i in direction:
-        if direct == i.name:
-            val = s.moveSnake(i.value)
-            if val == -1:
-                snakee.insert(0, w.itemconfig(foood.pop(), fill = "blue"))
-                w.itemconfig(snakee[1], fill = "black")
-                foood.append(w.create_oval(s.food[0]*20+44, s.food[1]*20+44, s.food[0]*20+56, s.food[1]*20+56, fill = "red"))
+    def drawBoard(self):
+        self.canvas.create_line(50, 50, 50, 450)
+        self.canvas.create_line(450, 450, 450, 50)
+        self.canvas.create_line(50, 50, 450, 50)
+        self.canvas.create_line(50, 450, 450, 450)
 
-            elif val == 1:
-                moveme = snakee.pop()
-                w.itemconfig(moveme, fill = "blue")
-                x = ((s.snake[0][0] + i.value[0]) * 20) - (s.snake[-1][0] * 20)
-                y = ((s.snake[0][1] + i.value[1]) * 20) - (s.snake[-1][1] * 20)
-                w.move(moveme, x, y)
-                snakee.insert(0, moveme)
-                w.itemconfig(snakee[1], fill = "black")
-    root.update()
-    return
+        for i in range(70, 450, 20):
+            self.canvas.create_line(i, 50, i, 450)
 
-def main():
-    root = Tk()
-    root.geometry('500x500')
-    
-    w = Canvas(root, width = 500, height = 500)
-    s = SnakeGame()
+        for j in range(70, 450, 20):
+            self.canvas.create_line(50, j, 450, j)
 
-    drawBoard(root, s, w)
-    root.update()
-    direct = "right"
-    updateSnake(root, s, w, direct)
-    direct = "right"
-    updateSnake(root, s, w, direct)
-    direct = "right"
-    updateSnake(root, s, w, direct)    
-    direct = "right"
-    updateSnake(root, s, w, direct)
-    direct = "right"
-    updateSnake(root, s, w, direct)    
-    direct = "right"
-    updateSnake(root, s, w, direct)    
-    direct = "right"
-    updateSnake(root, s, w, direct)    
-    direct = "right"
-    updateSnake(root, s, w, direct)
-    direct = "right"
-    updateSnake(root, s, w, direct)
-    direct = "right"
-    updateSnake(root, s, w, direct)
-    root.mainloop()
+        for i in range(len(self.gameInstance.snake)):
+            if i > 0:
+                self.snakeLayer.append(self.canvas.create_oval(
+                    self.gameInstance.snake[i][0]*20+44, self.gameInstance.snake[i][1]*20+44, self.gameInstance.snake[i][0]*20+56, self.gameInstance.snake[i][1]*20+56, fill="black"))
+            else:
+                self.snakeLayer.append(self.canvas.create_oval(
+                    self.gameInstance.snake[i][0]*20+44, self.gameInstance.snake[i][1]*20+44, self.gameInstance.snake[i][0]*20+56, self.gameInstance.snake[i][1]*20+56, fill="blue"))
 
-main()
+        self.foodLayer.append(self.canvas.create_oval(
+            self.gameInstance.food[0]*20+44, self.gameInstance.food[1]*20+44, self.gameInstance.food[0]*20+56, self.gameInstance.food[1]*20+56, fill="red"))
+        self.canvas.pack()
+
+        self.root.update()
+        return
+
+    # Redraws snake and food
+    def updateSnake(self, movement):
+        if movement == -1:
+            self.snakeLayer.insert(0, self.canvas.itemconfig(
+                self.foodLayer.pop(), fill="blue"))
+            self.canvas.itemconfig(self.snakeLayer[1], fill="black")
+            self.foodLayer.append(self.canvas.create_oval(
+                self.gameInstance.food[0]*20+44, self.gameInstance.food[1]*20+44, self.gameInstance.food[0]*20+56, self.gameInstance.food[1]*20+56, fill="red"))
+
+        elif movement == 1:
+            moveme = self.snakeLayer.pop()
+            self.canvas.itemconfig(moveme, fill="blue")
+            x = ((self.gameInstance.snake[0][0] + self.gameInstance.moveDirection.value[0])
+                 * 20) - (self.gameInstance.snake[-1][0] * 20)
+            y = ((self.gameInstance.snake[0][1] + self.gameInstance.moveDirection.value[1])
+                 * 20) - (self.gameInstance.snake[-1][1] * 20)
+            self.canvas.move(moveme, x, y)
+            self.snakeLayer.insert(0, moveme)
+            self.canvas.itemconfig(self.snakeLayer[1], fill="black")
+
+        self.root.update()
+        return
+
+    def animate(self):
+        self.root.mainloop()
