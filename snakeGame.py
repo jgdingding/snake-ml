@@ -11,8 +11,8 @@ import random
 class direction(Enum):
     right = (1, 0)
     left = (-1, 0)
-    up = (0, 1)
-    down = (0, -1)
+    up = (0, -1)
+    down = (0, 1)
 
 
 class items(Enum):
@@ -26,16 +26,17 @@ class SnakeGame:
     boardSize = 20
     snake = [(5, 10), (4, 10), (3, 10)]  # 0th element represents head
     snakeLength = 3
-    facing = direction.right
+    moveDirection = direction.right
 
     food = (15, 10)
 
     def __init__(self):
         self.board = [[items.blank.value]*20]*20
 
-    def moveSnake(self, dtn):
-        newCoord = (self.snake[0][0] + dtn[0],
-                    self.snake[0][1] + dtn[1])
+    # Move the snake in the movement direction
+    def moveSnake(self):
+        newCoord = (self.snake[0][0] + self.moveDirection.value[0],
+                    self.snake[0][1] + self.moveDirection.value[1])
         if newCoord[0] == self.food[0] and newCoord[1] == self.food[1]:  # if we hit the food
             self.snake.insert(0, newCoord)
             self.snakeLength += 1
@@ -54,6 +55,11 @@ class SnakeGame:
             return 1
         return 0
 
+    # Changes snake direction
+    def changeDirection(self, newDir):
+        self.moveDirection = newDir
+
+    # Randomly generate new food
     def generateFood(self):
         self.board[self.food[0]][self.food[1]] = items.blank.value
         x = random.randint(0, 19)
